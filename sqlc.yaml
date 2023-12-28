@@ -18,7 +18,13 @@ sql:
         package: "db"
         json_tags_case_style: "snake"
 overrides:
-    go: null
+  go:
+    overrides:
+      - db_type: "pg_catalog.numeric"
+        go_type:
+          import: "github.com/shopspring/decimal"
+          package: "decimal"
+          type: "Decimal"
 plugins: []
 rules: []
 options: {}

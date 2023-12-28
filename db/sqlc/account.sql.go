@@ -7,6 +7,8 @@ package db
 
 import (
 	"context"
+
+	decimal "github.com/shopspring/decimal"
 )
 
 const createAccount = `-- name: CreateAccount :one
@@ -20,9 +22,9 @@ INSERT INTO accounts (
 `
 
 type CreateAccountParams struct {
-	Owner        string `json:"owner"`
-	Balance      string `json:"balance"`
-	CurrencyCode string `json:"currency_code"`
+	Owner        string          `json:"owner"`
+	Balance      decimal.Decimal `json:"balance"`
+	CurrencyCode string          `json:"currency_code"`
 }
 
 func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (Account, error) {
@@ -115,8 +117,8 @@ RETURNING id, owner, balance, currency_code, created_at
 `
 
 type UpdateAccountParams struct {
-	ID      int64  `json:"id"`
-	Balance string `json:"balance"`
+	ID      int64           `json:"id"`
+	Balance decimal.Decimal `json:"balance"`
 }
 
 func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error) {
