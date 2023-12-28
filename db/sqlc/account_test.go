@@ -2,17 +2,17 @@ package db
 
 import (
 	"context"
+	"simple-bank/util"
 	"testing"
 
-	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCreateAccount(t *testing.T) {
 	arg := CreateAccountParams{
-		Owner:        "Tom",
-		Balance:      decimal.NewFromFloat(100.00),
-		CurrencyCode: "GBP",
+		Owner:        util.RandomAccountOwner(),
+		Balance:      util.RandomAmount(),
+		CurrencyCode: util.RandomCurrency(),
 	}
 
 	account, err := testQueries.CreateAccount(context.Background(), arg)
