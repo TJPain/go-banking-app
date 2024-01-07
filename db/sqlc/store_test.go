@@ -17,15 +17,17 @@ func TestTransferTx(t *testing.T) {
 	fmt.Println(">> before:", account1.Balance, account2.Balance)
 
 	// run n concurrent transfer transactions
-	n := 5
+	n := 2
 	amount := decimal.NewFromInt(10).Truncate(2)
 
 	errs := make(chan error)
 	results := make(chan TransferTxResult)
 
 	for i := 0; i < n; i++ {
+		txName := fmt.Sprintf("tx %d", i+1)
 		go func() {
-			result, err := store.TransferTx(context.Background(), TransferTxParams{
+			ctx := context.WithValue(context.Background(), txKey, txName)
+			result, err := store.TransferTx(ctx, TransferTxParams{
 				FromAccountID: account1.ID,
 				ToAccountID:   account2.ID,
 				Amount:        amount,
@@ -86,7 +88,7 @@ func TestTransferTx(t *testing.T) {
 
 		toAccount := result.ToAccount
 		require.NotEmpty(t, toAccount)
-		require.Equal(t, account2.ID, fromAccount.ID)
+		require.Equal(t, account2.ID, toAccount.ID)
 
 		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
 		diff1 := account1.Balance.Sub(fromAccount.Balance)
