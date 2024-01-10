@@ -62,7 +62,7 @@ func TestTransferTx(t *testing.T) {
 		fromEntry := result.FromEntry
 		require.NotEmpty(t, fromEntry)
 		require.Equal(t, account1.ID, fromEntry.AccountID)
-		require.Equal(t, decimal.NewFromInt(1).Div(amount).String(), fromEntry.Amount.String())
+		require.Equal(t, amount.Neg().String(), fromEntry.Amount.String())
 		require.NotZero(t, fromEntry.ID)
 		require.NotZero(t, fromEntry.CreatedAt)
 
@@ -91,7 +91,7 @@ func TestTransferTx(t *testing.T) {
 		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
 		diff1 := account1.Balance.Sub(fromAccount.Balance)
 		diff2 := toAccount.Balance.Sub(account2.Balance)
-		require.Equal(t, diff1, diff2)
+		require.Equal(t, diff1.String(), diff2.String())
 		require.True(t, diff1.GreaterThan(decimal.Zero))
 		require.True(t, diff1.Mod(amount).Equals(decimal.NewFromInt(0)))
 
