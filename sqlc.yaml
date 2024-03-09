@@ -14,7 +14,7 @@ sql:
         emit_prepared_queries: false
         emit_interface: false
         emit_exact_table_names: false
-        emit_empty_slices: false
+        emit_empty_slices: true
         package: "db"
         json_tags_case_style: "snake"
 overrides:
